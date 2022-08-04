@@ -25,21 +25,22 @@ INSERT INTO Inventory (invName, invPrice, invRare, invDesc) VALUES
     ("New Dagger", 275, "★★★", "If you ignore the bloody fingerprints it's like new!"),
     ("Supersonic Hypercube", 300, "★★★★", "With a name like that, how could it be bad?");
 
-SELECT * FROM Inventory;
+SELECT * FROM Inventory WHERE itemID = 1;
 
 CREATE TABLE Customers (
 	cusID int auto_increment,
     cusName varchar(255),
+    cusItem varchar(255),
     cusDesc varchar(255),
     PRIMARY KEY (cusID)
 );
 
-INSERT INTO Customers (cusName, cusDesc) VALUES
-	("Stinkus Savagetooth", "A mischevious, thieving gobin with a penchant for the fradulent. Tried to bite me once."),
-    ("Vorvath Netherboy", "A young vampire with piercings rarely seen outside their room, they enjoy loud music and complaining."),
-    ("Brinepaw Dustfang", "A distinguished, elder werewolf who enjoys conversation and a spot of tea by the fire."),
-    ("Mongrath Snagglesnare", "A vine monster ﻿that spreads itself over giant swaths of land. Tips nicely."),
-    ("Duskmoore Tanglewood", "﻿An ancient forest spirit taking the form of a small, funny-looking man with a beard.");
+INSERT INTO Customers (cusName, cusItem, cusDesc) VALUES
+	("Stinkus Savagetooth", "Questionable Cheese", "A mischevious, thieving gobin with a penchant for the fradulent. Tried to bite me once."),
+    ("Vorvath Netherboy", "Neon Jelly", "A young vampire with piercings rarely seen outside their room, they enjoy loud music and complaining."),
+    ("Brinepaw Dustfang", "Nail Bread", "A distinguished, elder werewolf who enjoys conversation and a spot of tea by the fire."),
+    ("Mongrath Snagglesnare", "Green Liquid", "A vine monster ﻿that spreads itself over giant swaths of land. Tips nicely."),
+    ("Duskmoore Tanglewood", "Questionable Cheese", "﻿An ancient forest spirit taking the form of a small, funny-looking man with a beard.");
     
 SELECT * FROM Customers;
 
@@ -48,7 +49,6 @@ CREATE TABLE Orders (
     cusID int,
     itemID int,
     PRIMARY KEY (saleID),
-    FOREIGN KEY (cusID) REFERENCES Customers(cusID),
     FOREIGN KEY (itemID) REFERENCES Inventory(itemID)
 );
 

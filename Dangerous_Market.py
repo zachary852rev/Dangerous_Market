@@ -1,5 +1,5 @@
 import logging
-from Dangerous_Modules import purchase_menu, profile_menu, atm_menu, signup, login, logged_in
+from Dangerous_Modules import purchase_menu, profile_menu, atm_menu, signup, login, logged_in, logged_in_success
 
 
 def main():
@@ -40,7 +40,11 @@ def main():
             signup()
         elif ch == 2:
             login()
-            logged_in()
+            if logged_in == True:
+                logged_in_success()
+            else:
+                print("You are not logged in!")
+
         elif ch == 3:
             return None
         else:
