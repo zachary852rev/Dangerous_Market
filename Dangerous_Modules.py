@@ -22,13 +22,12 @@ def signup():
             f.write(hash1)
         f.close()
         print("You have been successfully registered into the Dangerous Market!")
-        print("Please try logging in with the info you just entered.")
+        print("Please try logging in with the info you just entered.\n")
         logging.info("New user successfully entered into database.")
         return username
     else:
         print("Desired password does not match! \n")
         logging.info("New user tried to enter password that didn't match.")
-
 
 # Log-in function
 def login():
@@ -37,19 +36,17 @@ def login():
     pwd = input("Enter password: ")
     auth = pwd.encode()
     auth_hash = hashlib.md5(auth).hexdigest()
-
     with open("Stored_Info.txt", "r") as f:
         stored_user, stored_pwd = f.read().split("\n")
     f.close()
-
     if username == stored_user and auth_hash == stored_pwd:
-        print("Logged in successfully!")
+        print("Logged in successfully!\n")
         logging.info("User logged in successfully.")
         logged_in = True
         logged_in_success()
         return username
     else:
-        print("Login failed, ya chump! \n")
+        print("Login failed, ya chump! Try logging in again.\n")
         logging.info("User failed to login.")
         logged_in == False
 
@@ -63,43 +60,42 @@ def purchase_menu():
         pur_choice = input(">>> ")
         if pur_choice == "1":
             print("You currently have " + str(user_funds) + " gold.")
+            logging.info("User successfully viewed their gold.")
             purchase_inventory()
-
         elif pur_choice == "2":
             print("You currently have " + str(user_funds) + " gold.")
             print(user_inventory)
-
+            logging.info("User successfully viewed their gold.")
         else:
             return None
-
 
 # Profile menu where you can view user name and edit roles
 def profile_menu():
     global user_funds, user_inventory, user_spent, user_role
+    logging.info("User successfully opened the profile menu.")
     while True:
-        print("_"*100)
+        print("-"*100)
         print("\t1) View Profile \n\t2) Edit Roles \n\t3) View Friendlist \n\t4) Go Back")
         pro_choice = input(">>> ")
-
         if pro_choice == "1":
             file = open('Stored_Info.txt')
             content = file.readlines()
             content = content[0:-2]
             print("Your current username is zach.")
             print("Your current role is " + str(user_role) + ".")
-            print("You currently have " + str(user_funds) + " Gold.")
-
+            print("You currently have " + str(user_funds) + " Gold.\n")
+            logging.info("User successfully viewed their profile info.")
         elif pro_choice == "2":
             print("Your current role is " + user_role + ".")
             print("\nWould you like to change it? \n\t1) Yes \n\t2) No")
             role_change = input(">>> ")
             if role_change == "1":
                 user_role = "Admin"
-                print("Your role has been changed to 'Admin.'")
+                print("Your role has been changed to 'Admin.'\n")
+                logging.info("User successfully changed their role to Admin.")
             else:
                 user_role = "User"
-                print("No changes have been made.")
-
+                print("No changes have been made.\n")
         elif pro_choice == "3":
             # Pulls first five rows from MySql table Customers
             print("Your current friends: ")
@@ -117,10 +113,9 @@ def profile_menu():
             cursor.execute(cus03)
             fa = cursor.fetchone()
             print(fa)
-
+            logging.info("User successfully viewed their friendlist.")
         else:
             break
-
 
 # ATM menu to view and add funds
 def atm_menu():
@@ -129,17 +124,16 @@ def atm_menu():
         print("_"*100)
         print("\t1) Add funds \n\t2) View Wallet \n\t3) Go Back")
         atm_choice = input(">>> ")
-
         if atm_choice == "1":
             print("You currently have " + str(user_funds) + " Gold.")
             print("How much would you like to add?")
             add_funds = input(">>> ")
             user_funds = user_funds + int(add_funds)
             print("You currently have " + str(user_funds) + " Gold.")
-            
+            logging.info("User successfully added to their current gold amount.")        
         elif atm_choice == "2":
             print("You currently have " + str(user_funds) + " Gold.")
-
+            logging.info("User successfully viewed their current gold.")
         else:
             break
 
@@ -149,11 +143,11 @@ def show_inventory():
     while True:
         cnx = mysql.connector.connect(user="root", password="zp90", host="127.0.0.1", database="p1")
         cursor = cnx.cursor()
-        inv01 = "SELECT * FROM Inventory WHERE itemID = 1;"
-        inv02 = "SELECT * FROM Inventory WHERE itemID = 2;"
-        inv03 = "SELECT * FROM Inventory WHERE itemID = 3;"
-        inv04 = "SELECT * FROM Inventory WHERE itemID = 4;"
-        inv05 = "SELECT * FROM Inventory WHERE itemID = 5;"
+        inv01 = "SELECT * FROM Inventory WHERE itemID = 2;"
+        inv02 = "SELECT * FROM Inventory WHERE itemID = 4;"
+        inv03 = "SELECT * FROM Inventory WHERE itemID = 8;"
+        inv04 = "SELECT * FROM Inventory WHERE itemID = 9;"
+        inv05 = "SELECT * FROM Inventory WHERE itemID = 12;"
         cursor.execute(inv01)
         fa = cursor.fetchone()
         print(fa)
@@ -198,27 +192,27 @@ def purchase_inventory():
         print(fa)
         print("Please enter the ID number of the item you'd like to purchase.")
         purchase_choice = input(">>> ")
-        if purchase_choice == "1":
+        if purchase_choice == "2":
             user_inventory.append("Questionable Cheese")
             user_funds = user_funds - 50
             user_spent = user_spent + 50
             return user_funds, user_inventory, user_spent
-        elif purchase_choice == "2":
+        elif purchase_choice == "4":
             user_inventory.append("Nail Bread")
             user_funds = user_funds - 100
             user_spent = user_spent + 100
             return user_funds, user_inventory, user_spent
-        elif purchase_choice == "3":
+        elif purchase_choice == "8":
             user_inventory.append("Cursed Amulet")
             user_funds = user_funds - 200
             user_spent = user_spent + 200
             return user_funds, user_inventory, user_spent
-        elif purchase_choice == "4":
+        elif purchase_choice == "9":
             user_inventory.append("Midas Glove")
             user_funds = user_funds - 225
             user_spent = user_spent + 225
             return user_funds, user_inventory, user_spent
-        elif purchase_choice == "5":
+        elif purchase_choice == "12":
             user_inventory.append("Supersonic Hypercube")
             user_funds = user_funds - 300
             user_spent = user_spent + 300
@@ -226,8 +220,6 @@ def purchase_inventory():
         else:
             print("That is not a valid number, you fool!")
             return None
-
-
 
 # Main menu after you log in, points to other functions that are called
 def logged_in_success():     
@@ -244,4 +236,3 @@ def logged_in_success():
             atm_menu()
         else:
             return None
-    
